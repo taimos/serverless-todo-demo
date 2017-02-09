@@ -1,0 +1,163 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: AWS UGS Todo list
+Mappings:
+  RegionMap:
+    'eu-central-1':
+      S3Endpoint: '.s3-website.eu-central-1.amazonaws.com'
+    'eu-west-1':
+      S3Endpoint: '.s3-website-eu-west-1.amazonaws.com'
+Resources:
+  TodoTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      PrimaryKey:
+        Name: id
+        Type: String
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+
+  ApiListTodosFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.apiGetTodos
+      Runtime: nodejs4.3
+      Timeout: 10
+      CodeUri: ./backend
+      Policies:
+        Statement:
+          - Effect: "Allow"
+            Action: "dynamodb:*"
+            Resource:
+            - !Sub arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${TodoTable}
+            - !Sub arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${TodoTable}/index/*
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref TodoTable
+      Events:
+        ListDevices:
+          Type: Api
+          Properties:
+            Path: /todos
+            Method: get
+  ApiUpdateTodoFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.apiUpdateTodo
+      Runtime: nodejs4.3
+      Timeout: 10
+      CodeUri: ./backend
+      Policies:
+        Statement:
+          - Effect: "Allow"
+            Action: "dynamodb:*"
+            Resource:
+            - !Sub arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${TodoTable}
+            - !Sub arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${TodoTable}/index/*
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref TodoTable
+      Events:
+        ListDevices:
+          Type: Api
+          Properties:
+            Path: /todos/{id}
+            Method: put
+  ApiAddTodoFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.apiAddTodo
+      Runtime: nodejs4.3
+      Timeout: 10
+      CodeUri: ./backend
+      Policies:
+        Statement:
+          - Effect: "Allow"
+            Action: "dynamodb:*"
+            Resource:
+            - !Sub arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${TodoTable}
+            - !Sub arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${TodoTable}/index/*
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref TodoTable
+      Events:
+        ListDevices:
+          Type: Api
+          Properties:
+            Path: /todos
+            Method: post
+
+  WebappBucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      WebsiteConfiguration:
+        IndexDocument: index.html
+  S3BucketPolicy:
+    Type: 'AWS::S3::BucketPolicy'
+    Properties:
+      Bucket: !Ref WebappBucket
+      PolicyDocument:
+        Statement:
+          - Action: 's3:GetObject'
+            Effect: Allow
+            Resource: !Sub arn:aws:s3:::${WebappBucket}/*
+            Principal: '*'
+  CloudFrontDistribution:
+    Type: 'AWS::CloudFront::Distribution'
+    Properties:
+      DistributionConfig:
+        Comment: AWS UGS Todo
+        Origins:
+          - DomainName: !Join ['', [!Ref WebappBucket, !FindInMap [RegionMap, !Ref 'AWS::Region', S3Endpoint]]]
+            Id: s3origin
+            CustomOriginConfig:
+              OriginProtocolPolicy: http-only
+          - DomainName: !Sub ${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com
+            OriginPath: /Prod
+            Id: apiOrigin
+            CustomOriginConfig:
+              OriginProtocolPolicy: https-only
+        DefaultCacheBehavior:
+          AllowedMethods:
+            - GET
+            - HEAD
+            - OPTIONS
+          DefaultTTL: 0
+          MinTTL: 0
+          MaxTTL: 0
+          ForwardedValues:
+            QueryString: 'false'
+            Cookies:
+              Forward: none
+          TargetOriginId: s3origin
+          ViewerProtocolPolicy: redirect-to-https
+        CacheBehaviors:
+          - AllowedMethods:
+            - GET
+            - PUT
+            - POST
+            - HEAD
+            - DELETE
+            - OPTIONS
+            - PATCH
+            TargetOriginId: apiOrigin
+            DefaultTTL: 0
+            MinTTL: 0
+            MaxTTL: 0
+            ForwardedValues:
+              QueryString: 'true'
+              Cookies:
+                Forward: none
+            ViewerProtocolPolicy: redirect-to-https
+            PathPattern: /todos*
+        Enabled: true
+        PriceClass: PriceClass_All
+
+Outputs:
+  ApiUrl:
+    Description: URL of the API endpoint
+    Value: !Sub 'https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod'
+  WebUrl:
+    Description: URL of the Web endpoint
+    Value: !Sub 'https://${CloudFrontDistribution.DomainName}'

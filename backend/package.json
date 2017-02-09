@@ -1,0 +1,24 @@
+{
+  "name": "awsugs-todo",
+  "version": "1.0.0",
+  "description": "AWS UGS ToDo list",
+  "main": "index.js",
+  "scripts": {
+    "test": "node_modules/.bin/mocha --slow 200"
+  },
+  "author": "Taimos GmbH",
+  "dependencies": {
+    "aws-sdk": "^2.9.0",
+    "node-uuid": "^1.4.7",
+    "strict-mode": "^1.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^3.0.0",
+    "gulp": "gulpjs/gulp#4ed9a4a3275559c73a396eff7e1fde3824951ebb",
+    "gulp-eslint": "^3.0.0",
+    "lambda-local": "^1.4.0",
+    "mocha": "^3.2.0",
+    "proxyquire": "^1.7.11",
+    "should": "^11.2.0"
+  }
+}

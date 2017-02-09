@@ -1,0 +1,22 @@
+<div class="col-md-12">
+    <table class="table table-condensed extended column-heading">
+        <thead>
+            <tr>
+                <th width="33%">ID</th>
+                <th width="33%">Text</th>
+                <th width="33%">State</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="todo in $ctrl.todos | filter:$ctrl.filter | orderBy:'text'"
+                ng-class="{'danger':todo.state==='OPEN','info':todo.state==='IN_PROGRESS','success':todo.state==='DONE'}">
+                <td>{{todo.id}}</td>
+                <td>{{todo.text}}</td>
+                <td>{{todo.state}}&nbsp;
+                    <a href-void ng-click="$ctrl.proceed(todo)" ng-show="todo.state !== 'DONE'"><i class="fa fa-arrow-right"></i></a>
+                    <a href-void ng-click="$ctrl.reopen(todo)" ng-show="todo.state === 'DONE'"><i class="fa fa-refresh"></i></a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

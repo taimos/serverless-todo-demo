@@ -1,0 +1,17 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "angular"
+  ],
+  "env": {
+    "browser": true,
+    "jasmine": true
+  },
+  "globals": {
+    "console": true,
+    "module": true,
+    "$": true,
+    "moment": true,
+    "inject": true
+  }
+}
