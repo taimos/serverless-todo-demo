@@ -1448,9 +1448,9 @@ kind-of@^3.0.2:
   dependencies:
     is-buffer "^1.0.2"
 
-lambda-local@^1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/lambda-local/-/lambda-local-1.4.0.tgz#1010e6ca9c5482140fc738de59c5de831e0fed0c"
+lambda-local@^1.4.2:
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/lambda-local/-/lambda-local-1.4.2.tgz#e14764cc68e2c679b02556c223c056ca3d14f12b"
   dependencies:
     aws-sdk "^2.1.6"
     chai "^3.5.0"

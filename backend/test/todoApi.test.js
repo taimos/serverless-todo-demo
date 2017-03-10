@@ -26,7 +26,11 @@ describe('GetAPI', function () {
       }]);
     };
     
-    return callAPI(getAPI, 'handler', {}).then(response => {
+    return lambdaLocal.execute({
+      event: {},
+      lambdaFunc: getAPI,
+      lambdaHandler: 'handler'
+    }).then(response => {
       response.should.have.property('statusCode', '200');
       response.should.have.property('body');
       let list = JSON.parse(response.body);
@@ -65,8 +69,12 @@ describe('AddAPI', function () {
     let event = {
       body: JSON.stringify(todo)
     };
-    
-    return callAPI(addAPI, 'handler', event).then(response => {
+  
+    return lambdaLocal.execute({
+      event: event,
+      lambdaFunc: addAPI,
+      lambdaHandler: 'handler'
+    }).then(response => {
       response.should.have.property('statusCode', '201');
       response.should.have.property('headers');
       response.headers.should.have.property('Location', '/todos/randomID');
@@ -109,8 +117,12 @@ describe('UpdateAPI', function () {
       },
       body: JSON.stringify(todo)
     };
-    
-    return callAPI(updateAPI, 'handler', event).then(response => {
+  
+    return lambdaLocal.execute({
+      event: event,
+      lambdaFunc: updateAPI,
+      lambdaHandler: 'handler'
+    }).then(response => {
       response.should.have.property('statusCode', '200');
       response.should.have.property('body');
       let todo = JSON.parse(response.body);
@@ -138,29 +150,15 @@ describe('UpdateAPI', function () {
       },
       body: JSON.stringify(todo)
     };
-    
-    return callAPI(updateAPI, 'handler', event).then(response => {
+  
+    return lambdaLocal.execute({
+      event: event,
+      lambdaFunc: updateAPI,
+      lambdaHandler: 'handler'
+    }).then(response => {
       response.should.have.property('statusCode', '400');
       response.should.not.have.property('body');
     });
   });
   
 });
-
-const callAPI = (fn, handler, event) => {
-  'use strict';
-  
-  return new Promise((resolve, reject) => {
-    lambdaLocal.execute({
-      event: event,
-      lambdaFunc: fn,
-      lambdaHandler: handler,
-      callback: function (err, data) {
-        if (err) {
-          reject(err);
-        }
-        resolve(data);
-      }
-    });
-  });
-};
