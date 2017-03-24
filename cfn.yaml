@@ -22,7 +22,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.apiGetTodos
-      Runtime: nodejs4.3
+      Runtime: nodejs6.10
       Timeout: 10
       CodeUri: ./backend
       Policies:
@@ -45,7 +45,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.apiUpdateTodo
-      Runtime: nodejs4.3
+      Runtime: nodejs6.10
       Timeout: 10
       CodeUri: ./backend
       Policies:
@@ -68,7 +68,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.apiAddTodo
-      Runtime: nodejs4.3
+      Runtime: nodejs6.10
       Timeout: 10
       CodeUri: ./backend
       Policies:

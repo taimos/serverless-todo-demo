@@ -9,8 +9,7 @@
   "author": "Taimos GmbH",
   "dependencies": {
     "aws-sdk": "^2.9.0",
-    "node-uuid": "^1.4.7",
-    "strict-mode": "^1.0.1"
+    "node-uuid": "^1.4.7"
   },
   "devDependencies": {
     "eslint": "^3.0.0",
