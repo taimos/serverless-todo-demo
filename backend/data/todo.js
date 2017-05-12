@@ -6,16 +6,15 @@
  }
  */
 
-const TableName = process.env.TABLE_NAME;
 const AWS = require('aws-sdk');
-const dynamoClient = new AWS.DynamoDB.DocumentClient();
 
 exports.save = todo => {
   'use strict';
   let params = {
     Item: todo,
-    TableName: TableName
+    TableName: process.env.TABLE_NAME
   };
+  let dynamoClient = new AWS.DynamoDB.DocumentClient();
   return dynamoClient.put(params).promise().then(() => {
     // return saved todo
     return todo;
@@ -29,8 +28,9 @@ exports.getById = id => {
     Key: {
       id: id
     },
-    TableName: TableName
+    TableName: process.env.TABLE_NAME
   };
+  let dynamoClient = new AWS.DynamoDB.DocumentClient();
   return dynamoClient.get(params).promise().then(data => {
     if (!data.Item) {
       return Promise.reject();
@@ -42,6 +42,8 @@ exports.getById = id => {
 
 const scanDynamoDB = query => {
   'use strict';
+  
+  let dynamoClient = new AWS.DynamoDB.DocumentClient();
   return dynamoClient.scan(query).promise().then(data => {
     if (!data.Items) {
       return [];
@@ -64,7 +66,7 @@ exports.listTodos = () => {
   'use strict';
   
   return scanDynamoDB({
-    'TableName': TableName,
+    'TableName': process.env.TABLE_NAME,
     'Limit': 1000
   });
 };
