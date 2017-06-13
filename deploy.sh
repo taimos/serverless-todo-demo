@@ -15,7 +15,7 @@ npm test
 yarn install --prod
 cd ..
 
-aws cloudformation package --template-file cfn.yaml --s3-bucket ${ACCOUNT_ID}-sam-deploy --s3-prefix awsugs-todo --output-template-file cfn.packaged.yaml
+aws cloudformation package --template-file cfn.yaml --s3-bucket ${ACCOUNT_ID}-sam-deploy-${AWS_REGION} --s3-prefix ${STACK_NAME} --output-template-file cfn.packaged.yaml
 
 aws cloudformation deploy --template-file cfn.packaged.yaml --stack-name ${STACK_NAME} --capabilities CAPABILITY_IAM || echo "No Update"
 
