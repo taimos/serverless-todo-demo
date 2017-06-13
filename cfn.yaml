@@ -24,6 +24,7 @@ Resources:
       Handler: index.apiGetTodos
       Runtime: nodejs6.10
       Timeout: 10
+      MemorySize: 512
       CodeUri: ./backend
       Policies:
         Statement:
@@ -47,6 +48,7 @@ Resources:
       Handler: index.apiUpdateTodo
       Runtime: nodejs6.10
       Timeout: 10
+      MemorySize: 512
       CodeUri: ./backend
       Policies:
         Statement:
@@ -70,6 +72,7 @@ Resources:
       Handler: index.apiAddTodo
       Runtime: nodejs6.10
       Timeout: 10
+      MemorySize: 512
       CodeUri: ./backend
       Policies:
         Statement:
