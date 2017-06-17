@@ -6,7 +6,7 @@ export AWS_REGION=eu-central-1
 set -e
 
 ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
-STACK_NAME=awsugs-todo
+STACK_NAME=serverless-todo-demo
 
 cd backend
 npm install
