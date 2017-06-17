@@ -1,1 +1,4 @@
 *.packaged.yaml
+node_modules/
+.tmp/
+dist/
