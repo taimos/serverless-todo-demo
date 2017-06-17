@@ -12,7 +12,7 @@
   "scripts": {
     "build": "rimraf dist && webpack --bail --progress --profile",
     "server": "webpack-dev-server --history-api-fallback --inline --progress",
-    "test": "./node_modules/.bin/eslint 'src/**/*.js'",
+    "test": "./node_modules/.bin/eslint .",
     "start": "npm run server"
   },
   "devDependencies": {

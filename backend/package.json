@@ -4,7 +4,7 @@
   "description": "AWS UGS ToDo list",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/eslint index.js api/*.js data/*.js test/*.js && ./node_modules/.bin/mocha --slow 200"
+    "test": "./node_modules/.bin/eslint . && ./node_modules/.bin/mocha --slow 200"
   },
   "author": "Taimos GmbH",
   "dependencies": {
