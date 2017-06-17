@@ -21,25 +21,6 @@ exports.save = todo => {
   });
 };
 
-exports.getById = id => {
-  'use strict';
-  
-  let params = {
-    Key: {
-      id: id
-    },
-    TableName: process.env.TABLE_NAME
-  };
-  let dynamoClient = new AWS.DynamoDB.DocumentClient();
-  return dynamoClient.get(params).promise().then(data => {
-    if (!data.Item) {
-      return Promise.reject();
-    }
-    return data.Item;
-  });
-};
-
-
 const scanDynamoDB = query => {
   'use strict';
   

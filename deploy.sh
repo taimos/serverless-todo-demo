@@ -9,10 +9,9 @@ ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
 STACK_NAME=awsugs-todo
 
 cd backend
-yarn install
-gulp default
+npm install
 npm test
-yarn install --prod
+npm install --prod
 cd ..
 
 aws cloudformation package --template-file cfn.yaml --s3-bucket ${ACCOUNT_ID}-sam-deploy-${AWS_REGION} --s3-prefix ${STACK_NAME} --output-template-file cfn.packaged.yaml

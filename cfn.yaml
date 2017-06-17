@@ -29,7 +29,7 @@ Resources:
       Policies:
         Statement:
           - Effect: "Allow"
-            Action: "dynamodb:*"
+            Action: "dynamodb:Scan"
             Resource:
             - !Sub arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${TodoTable}
             - !Sub arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${TodoTable}/index/*
@@ -53,7 +53,7 @@ Resources:
       Policies:
         Statement:
           - Effect: "Allow"
-            Action: "dynamodb:*"
+            Action: "dynamodb:PutItem"
             Resource:
             - !Sub arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${TodoTable}
             - !Sub arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${TodoTable}/index/*
@@ -77,7 +77,7 @@ Resources:
       Policies:
         Statement:
           - Effect: "Allow"
-            Action: "dynamodb:*"
+            Action: "dynamodb:PutItem"
             Resource:
             - !Sub arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${TodoTable}
             - !Sub arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${TodoTable}/index/*
