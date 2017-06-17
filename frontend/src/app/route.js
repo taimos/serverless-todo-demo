@@ -1,11 +1,9 @@
-(function () {
-  'use strict';
-  
-  angular
-    .module('app')
-    .config(routeConfig);
-  
-  function routeConfig($stateProvider, $urlRouterProvider) {
+import angular from 'angular';
+
+import todoList from './components/todoList';
+
+let routeConfig = ($stateProvider, $urlRouterProvider) => {
+    'ngInject';
     $urlRouterProvider.otherwise('/todos');
     
     $stateProvider
@@ -14,7 +12,7 @@
         params: {
           siteTitle: 'Todo list'
         },
-        component: 'todoList',
+        component: todoList,
         resolve: {
           todos: function (TodoService) {
             return TodoService.getList();
@@ -23,5 +21,6 @@
       })
     ;
   }
-  
-})();
+;
+
+angular.module('app').config(routeConfig);

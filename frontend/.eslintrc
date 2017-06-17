@@ -13,5 +13,15 @@
     "$": true,
     "moment": true,
     "inject": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "modules": true
+    }
+  },
+  "rules": {
+    "angular/no-service-method": 0
   }
 }

@@ -1,27 +1,32 @@
-(function () {
-  'use strict';
-  angular.module('app')
-    .factory('TodoService', Service);
+import angular from 'angular';
+
+class Service {
   
-  /** @ngInject */
-  function Service($http) {
-    return {
-      getList: function () {
-        return $http.get('/todos').then(function (res) {
-          return res.data;
-        });
-      },
-      create: function (todo) {
-        return $http.post('/todos', todo).then(function (res) {
-          return res.data;
-        });
-      },
-      update: function (todo) {
-        return $http.put('/todos/' + todo.id, todo).then(function (res) {
-          return res.data;
-        });
-      }
-    };
+  constructor($http) {
+    'ngInject';
+    this.$http = $http;
   }
   
-})();
+  getList() {
+    return this.$http.get('/todos').then(function (res) {
+      return res.data;
+    });
+  }
+  
+  create(todo) {
+    return this.$http.post('/todos', todo).then(function (res) {
+      return res.data;
+    });
+  }
+  
+  update(todo) {
+    return this.$http.put('/todos/' + todo.id, todo).then(function (res) {
+      return res.data;
+    });
+  }
+  
+}
+
+const SERVICE = 'TodoService';
+angular.module('app').service(SERVICE, Service);
+export default SERVICE;

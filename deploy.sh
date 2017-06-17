@@ -27,10 +27,8 @@ aws cloudformation package --template-file cfn.yaml --s3-bucket ${SAM_BUCKET} --
 aws cloudformation deploy --template-file cfn.packaged.yaml --stack-name ${STACK_NAME} --capabilities CAPABILITY_IAM || echo "No Update"
 
 cd frontend
-rm -rf $(pwd)/dist
-yarn install
-bower install
-gulp build
+npm install
+npm run build
 BUCKET=$(aws cloudformation describe-stack-resources --stack-name ${STACK_NAME} --logical-resource-id WebappBucket --query "StackResources[].PhysicalResourceId" --output text)
 aws s3 sync --delete --exact-timestamps dist/ s3://${BUCKET}
 aws s3 cp dist/index.html s3://${BUCKET}/index.html
