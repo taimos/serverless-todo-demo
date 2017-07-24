@@ -14,8 +14,6 @@
   "devDependencies": {
     "aws-sdk-mock": "^1.7.0",
     "eslint": "^3.0.0",
-    "gulp": "gulpjs/gulp#4ed9a4a3275559c73a396eff7e1fde3824951ebb",
-    "gulp-eslint": "^3.0.0",
     "lambda-local": "^1.4.2",
     "mocha": "^3.2.0",
     "proxyquire": "^1.7.11",
