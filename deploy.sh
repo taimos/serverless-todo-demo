@@ -14,6 +14,7 @@ if ! aws s3api head-bucket --bucket "${SAM_BUCKET}" 2>/dev/null; then
  echo "This bucket can be reused for all your SAM deployments"
  echo ""
  echo "aws s3 mb s3://${SAM_BUCKET}"
+ exit 1
 fi
 
 cd backend
