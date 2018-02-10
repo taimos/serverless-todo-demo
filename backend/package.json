@@ -1,10 +1,11 @@
 {
-  "name": "awsugs-todo",
+  "name": "serverless-todo-demo",
   "version": "1.0.0",
-  "description": "AWS UGS ToDo list",
+  "description": "Serverless ToDo list",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/eslint . && ./node_modules/.bin/mocha --slow 200"
+    "test": "./node_modules/.bin/eslint . && ./node_modules/.bin/mocha --slow 200 --require babel-core/register",
+    "start": "./node_modules/.bin/webpack"
   },
   "author": "Taimos GmbH",
   "dependencies": {
@@ -13,10 +14,15 @@
   },
   "devDependencies": {
     "aws-sdk-mock": "^1.7.0",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^6.4.1",
+    "babel-plugin-syntax-async-functions": "^6.13.0",
+    "babel-preset-env": "^1.6.1",
     "eslint": "^3.0.0",
     "lambda-local": "^1.4.2",
     "mocha": "^3.2.0",
     "proxyquire": "^1.7.11",
-    "should": "^11.2.0"
+    "should": "^11.2.0",
+    "webpack": "^3.10.0"
   }
 }

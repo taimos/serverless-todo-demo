@@ -6,48 +6,46 @@
  }
  */
 
-const AWS = require('aws-sdk');
+import AWS from 'aws-sdk';
 
-exports.save = todo => {
-  'use strict';
+const save = async todo => {
   let params = {
     Item: todo,
     TableName: process.env.TABLE_NAME
   };
-  let dynamoClient = new AWS.DynamoDB.DocumentClient();
-  return dynamoClient.put(params).promise().then(() => {
-    // return saved todo
-    return todo;
-  });
-};
-
-const scanDynamoDB = query => {
-  'use strict';
   
   let dynamoClient = new AWS.DynamoDB.DocumentClient();
-  return dynamoClient.scan(query).promise().then(data => {
-    if (!data.Items) {
-      return [];
-    }
-    let todos = data.Items;
-    if (data.LastEvaluatedKey) {
-      query.ExclusiveStartKey = data.LastEvaluatedKey;
-      return scanDynamoDB(query).then(list => {
-        todos.forEach(item => {
-          list.push(item);
-        });
-        return list;
-      });
-    }
-    return todos;
-  });
+  await dynamoClient.put(params).promise();
+  
+  return todo;
 };
 
-exports.listTodos = () => {
-  'use strict';
+const scanDynamoDB = async query => {
   
+  let dynamoClient = new AWS.DynamoDB.DocumentClient();
+  
+  let data = await dynamoClient.scan(query).promise();
+  
+  if (!data.Items) {
+    return [];
+  }
+  let todos = data.Items;
+  if (data.LastEvaluatedKey) {
+    query.ExclusiveStartKey = data.LastEvaluatedKey;
+    let list = await scanDynamoDB(query);
+    todos.forEach(item => {
+      list.push(item);
+    });
+    return list;
+  }
+  return todos;
+};
+
+const listTodos = () => {
   return scanDynamoDB({
     'TableName': process.env.TABLE_NAME,
     'Limit': 1000
   });
 };
+
+export {save, listTodos};

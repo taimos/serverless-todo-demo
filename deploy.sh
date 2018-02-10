@@ -18,9 +18,10 @@ if ! aws s3api head-bucket --bucket "${SAM_BUCKET}" 2>/dev/null; then
 fi
 
 cd backend
+rm -f dist/index.js
 npm install
 npm test
-npm install --prod
+npm start
 cd ..
 
 aws cloudformation package --template-file cfn.yaml --s3-bucket ${SAM_BUCKET} --s3-prefix ${STACK_NAME} --output-template-file cfn.packaged.yaml
@@ -30,7 +31,7 @@ aws cloudformation deploy --template-file cfn.packaged.yaml --stack-name ${STACK
 cd frontend
 npm install
 npm run build
-BUCKET=$(aws cloudformation describe-stack-resources --stack-name ${STACK_NAME} --logical-resource-id WebappBucket --query "StackResources[].PhysicalResourceId" --output text)
+BUCKET=$(aws cloudformation describe-stacks --stack-name ${STACK_NAME} --query "Stacks[0].Outputs[?OutputKey == 'WebappBucket'].OutputValue" --output text)
 aws s3 sync --delete --exact-timestamps dist/ s3://${BUCKET}
 aws s3 cp dist/index.html s3://${BUCKET}/index.html
 cd ..

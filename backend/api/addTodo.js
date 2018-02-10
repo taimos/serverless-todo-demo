@@ -1,20 +1,18 @@
-const todos = require('../data/todo');
-const uuid = require('node-uuid');
+import {save} from '../data/todo';
+import uuid from 'node-uuid';
 
-exports.handler = (event, context, callback) => {
-  'use strict';
-  
+export default async (event, context, callback) => {
   let todo = JSON.parse(event.body);
   todo.id = uuid.v4();
   
-  todos.save(todo).then(saved => {
-    callback(null, {
-      statusCode: '201',
-      headers: {
-        Location: '/todos/' + saved.id
-      },
-      body: JSON.stringify(saved)
-    });
+  let saved = await save(todo);
+  
+  callback(null, {
+    statusCode: '201',
+    headers: {
+      Location: '/todos/' + saved.id
+    },
+    body: JSON.stringify(saved)
   });
   
 };

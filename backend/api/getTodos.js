@@ -1,12 +1,8 @@
-const todos = require('../data/todo');
+import {listTodos} from '../data/todo';
 
-exports.handler = (event, context, callback) => {
-  'use strict';
-  
-  todos.listTodos().then(list => {
-    callback(null, {
-      statusCode: '200',
-      body: JSON.stringify(list)
-    });
+export default async (event, context, callback) => {
+  callback(null, {
+    statusCode: '200',
+    body: JSON.stringify(await listTodos())
   });
 };

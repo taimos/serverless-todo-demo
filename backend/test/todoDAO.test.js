@@ -1,13 +1,13 @@
-require('should');
-const dao = require('../data/todo');
-const AWS = require('aws-sdk-mock');
+import AWS from 'aws-sdk-mock';
+import 'should';
+import lambdaLocal from 'lambda-local';
+import {listTodos, save} from '../data/todo';
 
+lambdaLocal.getLogger().level = 'error';
 process.env.TABLE_NAME = 'SomeTable';
 
 describe('Test ToDo DAO - save', () => {
-  'use strict';
-  
-  it('should save todo', () => {
+  it('should save todo', async () => {
     
     AWS.mock('DynamoDB.DocumentClient', 'put', (params, callback) => {
       params.should.be.an.Object();
@@ -20,15 +20,15 @@ describe('Test ToDo DAO - save', () => {
       callback(null, {});
     });
     
-    return dao.save({
+    let todo = await save({
       id: 'todoId',
       text: 'ToDoText',
       state: 'OPEN'
-    }).then(todo => {
-      todo.should.have.property('id', 'todoId');
-      todo.should.have.property('text', 'ToDoText');
-      todo.should.have.property('state', 'OPEN');
     });
+    
+    todo.should.have.property('id', 'todoId');
+    todo.should.have.property('text', 'ToDoText');
+    todo.should.have.property('state', 'OPEN');
   });
   
   afterEach(() => {
@@ -38,9 +38,7 @@ describe('Test ToDo DAO - save', () => {
 });
 
 describe('Test ToDo DAO - list', () => {
-  'use strict';
-  
-  it('should list todos', () => {
+  it('should list todos', async () => {
     
     AWS.mock('DynamoDB.DocumentClient', 'scan', (params, callback) => {
       params.should.be.an.Object();
@@ -58,16 +56,15 @@ describe('Test ToDo DAO - list', () => {
       });
     });
     
-    return dao.listTodos().then(list => {
-      list.should.be.an.Array();
-      list.should.have.size(1);
-      list[0].should.have.property('id', 'todoId');
-      list[0].should.have.property('text', 'ToDoText');
-      list[0].should.have.property('state', 'OPEN');
-    });
+    let list = await listTodos();
+    list.should.be.an.Array();
+    list.should.have.size(1);
+    list[0].should.have.property('id', 'todoId');
+    list[0].should.have.property('text', 'ToDoText');
+    list[0].should.have.property('state', 'OPEN');
   });
   
-  it('should handle empty list', () => {
+  it('should handle empty list', async () => {
     
     AWS.mock('DynamoDB.DocumentClient', 'scan', (params, callback) => {
       params.should.be.an.Object();
@@ -77,14 +74,13 @@ describe('Test ToDo DAO - list', () => {
       callback(null, {});
     });
     
-    return dao.listTodos().then(list => {
-      list.should.be.an.Array();
-      list.should.have.size(0);
-    });
+    let list = await listTodos();
+    list.should.be.an.Array();
+    list.should.have.size(0);
   });
   
   
-  it('should list todos with paging', () => {
+  it('should list todos with paging', async () => {
     let queryCount = 0;
     
     AWS.mock('DynamoDB.DocumentClient', 'scan', (params, callback) => {
@@ -113,20 +109,19 @@ describe('Test ToDo DAO - list', () => {
       callback(null, result);
     });
     
-    return dao.listTodos().then(list => {
-      list.should.be.an.Array();
-      list.should.have.size(2);
-
-      list[0].should.have.property('id', 'todoId');
-      list[0].should.have.property('text', 'ToDoText1');
-      list[0].should.have.property('state', 'OPEN');
-
-      list[1].should.have.property('id', 'todoId');
-      list[1].should.have.property('text', 'ToDoText0');
-      list[1].should.have.property('state', 'OPEN');
-      
-      queryCount.should.be.equal(1);
-    });
+    let list = await listTodos();
+    list.should.be.an.Array();
+    list.should.have.size(2);
+    
+    list[0].should.have.property('id', 'todoId');
+    list[0].should.have.property('text', 'ToDoText1');
+    list[0].should.have.property('state', 'OPEN');
+    
+    list[1].should.have.property('id', 'todoId');
+    list[1].should.have.property('text', 'ToDoText0');
+    list[1].should.have.property('state', 'OPEN');
+    
+    queryCount.should.be.equal(1);
   });
   
   afterEach(() => {

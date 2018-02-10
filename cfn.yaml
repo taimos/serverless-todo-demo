@@ -25,7 +25,7 @@ Resources:
       Runtime: nodejs6.10
       Timeout: 10
       MemorySize: 512
-      CodeUri: ./backend
+      CodeUri: ./backend/dist/index.js
       Policies:
         Statement:
           - Effect: "Allow"
@@ -49,7 +49,7 @@ Resources:
       Runtime: nodejs6.10
       Timeout: 10
       MemorySize: 512
-      CodeUri: ./backend
+      CodeUri: ./backend/dist/index.js
       Policies:
         Statement:
           - Effect: "Allow"
@@ -73,7 +73,7 @@ Resources:
       Runtime: nodejs6.10
       Timeout: 10
       MemorySize: 512
-      CodeUri: ./backend
+      CodeUri: ./backend/dist/index.js
       Policies:
         Statement:
           - Effect: "Allow"
@@ -164,3 +164,9 @@ Outputs:
   WebUrl:
     Description: URL of the Web endpoint
     Value: !Sub 'https://${CloudFrontDistribution.DomainName}'
+  WebappBucket:
+    Description: The S3 bucket containing the SPA
+    Value: !Ref WebappBucket
+  CloudFrontDistribution:
+    Description: The CloudFront distribution used as endpoint
+    Value: !Ref CloudFrontDistribution

@@ -1,7 +1,6 @@
-const todos = require('../data/todo');
+import {save} from '../data/todo';
 
-exports.handler = (event, context, callback) => {
-  'use strict';
+export default async (event, context, callback) => {
   let todo = JSON.parse(event.body);
   
   if (todo.id !== event.pathParameters.id) {
@@ -11,10 +10,8 @@ exports.handler = (event, context, callback) => {
     return;
   }
   
-  todos.save(todo).then(saved => {
-    callback(null, {
-      statusCode: '200',
-      body: JSON.stringify(saved)
-    });
+  callback(null, {
+    statusCode: '200',
+    body: JSON.stringify(await save(todo))
   });
 };

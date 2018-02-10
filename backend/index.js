@@ -1,4 +1,5 @@
+import apiGetTodos from './api/getTodos';
+import apiAddTodo from './api/addTodo';
+import apiUpdateTodo from './api/updateTodo';
 
-exports.apiGetTodos = require('./api/getTodos').handler;
-exports.apiAddTodo = require('./api/addTodo').handler;
-exports.apiUpdateTodo = require('./api/updateTodo').handler;
+export {apiGetTodos, apiAddTodo, apiUpdateTodo};
