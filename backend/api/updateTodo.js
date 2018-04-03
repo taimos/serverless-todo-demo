@@ -1,17 +1,16 @@
 import {save} from '../data/todo';
 
-export default async (event, context, callback) => {
+export default async (event) => {
   let todo = JSON.parse(event.body);
   
   if (todo.id !== event.pathParameters.id) {
-    callback(null, {
+    return {
       statusCode: '400'
-    });
-    return;
+    };
   }
   
-  callback(null, {
+  return {
     statusCode: '200',
     body: JSON.stringify(await save(todo))
-  });
+  };
 };

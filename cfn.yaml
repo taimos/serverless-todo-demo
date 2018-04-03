@@ -1,12 +1,11 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: AWS UGS Todo list
-Mappings:
-  RegionMap:
-    'eu-central-1':
-      S3Endpoint: '.s3-website.eu-central-1.amazonaws.com'
-    'eu-west-1':
-      S3Endpoint: '.s3-website-eu-west-1.amazonaws.com'
+Globals:
+  Function:
+    Runtime: nodejs8.10
+    Timeout: 10
+    MemorySize: 512
 Resources:
   TodoTable:
     Type: AWS::Serverless::SimpleTable
@@ -22,9 +21,6 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.apiGetTodos
-      Runtime: nodejs6.10
-      Timeout: 10
-      MemorySize: 512
       CodeUri: ./backend/dist/index.js
       Policies:
         Statement:
@@ -46,9 +42,6 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.apiUpdateTodo
-      Runtime: nodejs6.10
-      Timeout: 10
-      MemorySize: 512
       CodeUri: ./backend/dist/index.js
       Policies:
         Statement:
@@ -70,9 +63,6 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.apiAddTodo
-      Runtime: nodejs6.10
-      Timeout: 10
-      MemorySize: 512
       CodeUri: ./backend/dist/index.js
       Policies:
         Statement:
@@ -105,17 +95,25 @@ Resources:
           - Action: 's3:GetObject'
             Effect: Allow
             Resource: !Sub arn:aws:s3:::${WebappBucket}/*
-            Principal: '*'
+            Principal:
+              CanonicalUser: !GetAtt OriginAccessIdentity.S3CanonicalUserId
+  OriginAccessIdentity:
+    Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+    Properties:
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: !Ref AWS::StackName
+
   CloudFrontDistribution:
     Type: 'AWS::CloudFront::Distribution'
     Properties:
       DistributionConfig:
         Comment: AWS UGS Todo
+        DefaultRootObject: index.html
         Origins:
-          - DomainName: !Join ['', [!Ref WebappBucket, !FindInMap [RegionMap, !Ref 'AWS::Region', S3Endpoint]]]
+          - DomainName: !Sub ${WebappBucket}.s3.amazonaws.com
             Id: s3origin
-            CustomOriginConfig:
-              OriginProtocolPolicy: http-only
+            S3OriginConfig:
+              OriginAccessIdentity: !Sub origin-access-identity/cloudfront/${OriginAccessIdentity}
           - DomainName: !Sub ${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com
             OriginPath: /Prod
             Id: apiOrigin
