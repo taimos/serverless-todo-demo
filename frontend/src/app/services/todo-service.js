@@ -8,21 +8,15 @@ class Service {
   }
   
   getList() {
-    return this.$http.get('/todos').then(function (res) {
-      return res.data;
-    });
+    return this.$http.get('/todos').then(res => res.data);
   }
   
   create(todo) {
-    return this.$http.post('/todos', todo).then(function (res) {
-      return res.data;
-    });
+    return this.$http.post('/todos', todo).then(res => res.data);
   }
   
   update(todo) {
-    return this.$http.put('/todos/' + todo.id, todo).then(function (res) {
-      return res.data;
-    });
+    return this.$http.put('/todos/' + todo.id, todo).then(res => res.data);
   }
   
 }

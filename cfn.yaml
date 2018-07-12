@@ -81,6 +81,16 @@ Resources:
             Path: /todos
             Method: post
 
+  ServerlessRestApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+      DefinitionBody:
+        'Fn::Transform':
+          Name: 'AWS::Include'
+          Parameters:
+            Location: !Sub s3://${AWS::AccountId}-sam-deploy-${AWS::Region}/${AWS::StackName}/swagger.yaml
+
   WebappBucket:
     Type: 'AWS::S3::Bucket'
     Properties:
@@ -128,7 +138,7 @@ Resources:
           MinTTL: 0
           MaxTTL: 0
           ForwardedValues:
-            QueryString: 'false'
+            QueryString: false
             Cookies:
               Forward: none
           TargetOriginId: s3origin
@@ -147,7 +157,7 @@ Resources:
             MinTTL: 0
             MaxTTL: 0
             ForwardedValues:
-              QueryString: 'true'
+              QueryString: true
               Cookies:
                 Forward: none
             ViewerProtocolPolicy: redirect-to-https

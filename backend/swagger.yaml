@@ -1,0 +1,29 @@
+---
+swagger: '2.0'
+info:
+  version: '1.0'
+  title: Serverless Todo Demo
+paths:
+  /todos:
+    post:
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        type: aws_proxy
+        uri:
+          'Fn::Sub': 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ApiAddTodoFunction.Arn}/invocations'
+      responses: {}
+    get:
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        type: aws_proxy
+        uri:
+          'Fn::Sub': 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ApiListTodosFunction.Arn}/invocations'
+      responses: {}
+  '/todos/{id}':
+    put:
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        type: aws_proxy
+        uri:
+          'Fn::Sub': 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ApiUpdateTodoFunction.Arn}/invocations'
+      responses: {}
