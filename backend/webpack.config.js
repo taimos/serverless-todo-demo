@@ -3,24 +3,30 @@
  */
 
 const path = require('path');
-const webpack = require('webpack');
-const pkg = require('./package.json');
 
 module.exports = {
-  entry: path.resolve(__dirname, pkg.main),
-  output: {
-    path: path.join(__dirname, 'dist'),
-    libraryTarget: 'commonjs2',
-    filename: pkg.main
-  },
+  entry: './lib/index.ts',
+  mode: 'production',
   target: 'node',
   module: {
-    loaders: [
-      {test: /\.js$/, loader: 'babel-loader', exclude: /node_modules/},
-      {test: /\.json$/, loader: 'json-loader'}
+    rules: [
+      {
+        test: /\.ts$/,
+        use: ['ts-loader'],
+        exclude: /node_modules/
+      }
     ]
   },
-  plugins: [
-    new webpack.NoEmitOnErrorsPlugin()
-  ]
+  resolve: {
+    extensions: ['.ts', '.js']
+  },
+  output: {
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist'),
+    library: 'skill',
+    libraryTarget: 'commonjs2'
+  },
+  performance: {
+    hints: false
+  }
 };

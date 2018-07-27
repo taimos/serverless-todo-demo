@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "es2017",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "rootDir": "lib",
+    "outDir": "dist",
+    "sourceMap": true,
+    "inlineSources": false,
+    "alwaysStrict": true,
+    "removeComments": false,
+    "declaration": true,
+    "lib": [
+      "es2017",
+      "es2015"
+    ]
+  },
+  "include": [
+    "lib"
+  ]
+}

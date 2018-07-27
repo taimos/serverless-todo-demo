@@ -20,8 +20,8 @@ Resources:
   ApiListTodosFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: index.apiGetTodos
-      CodeUri: ./backend/dist/index.js
+      Handler: bundle.apiGetTodos
+      CodeUri: ./backend/dist/bundle.js
       Policies:
         Statement:
           - Effect: "Allow"
@@ -41,8 +41,8 @@ Resources:
   ApiUpdateTodoFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: index.apiUpdateTodo
-      CodeUri: ./backend/dist/index.js
+      Handler: bundle.apiUpdateTodo
+      CodeUri: ./backend/dist/bundle.js
       Policies:
         Statement:
           - Effect: "Allow"
@@ -62,8 +62,8 @@ Resources:
   ApiAddTodoFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: index.apiAddTodo
-      CodeUri: ./backend/dist/index.js
+      Handler: bundle.apiAddTodo
+      CodeUri: ./backend/dist/bundle.js
       Policies:
         Statement:
           - Effect: "Allow"

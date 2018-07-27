@@ -18,10 +18,9 @@ if ! aws s3api head-bucket --bucket "${SAM_BUCKET}" 2>/dev/null; then
 fi
 
 cd backend
-rm -f dist/index.js
 npm install
 npm test
-npm start
+npm run build
 cd ..
 
 aws s3 cp backend/swagger.yaml s3://${SAM_BUCKET}/${STACK_NAME}/swagger.yaml

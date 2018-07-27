@@ -1,0 +1,9 @@
+coverage/
+doc/
+lib/
+node_modules/
+tst/
+lib/index.ts
+package-lock.json
+tsconfig.json
+tslint.json
