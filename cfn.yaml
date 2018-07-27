@@ -36,6 +36,7 @@ Resources:
         ListDevices:
           Type: Api
           Properties:
+            RestApiId: !Ref RestApi
             Path: /todos
             Method: get
   ApiUpdateTodoFunction:
@@ -57,6 +58,7 @@ Resources:
         ListDevices:
           Type: Api
           Properties:
+            RestApiId: !Ref RestApi
             Path: /todos/{id}
             Method: put
   ApiAddTodoFunction:
@@ -78,10 +80,11 @@ Resources:
         ListDevices:
           Type: Api
           Properties:
+            RestApiId: !Ref RestApi
             Path: /todos
             Method: post
 
-  ServerlessRestApi:
+  RestApi:
     Type: AWS::Serverless::Api
     Properties:
       StageName: Prod
@@ -124,7 +127,7 @@ Resources:
             Id: s3origin
             S3OriginConfig:
               OriginAccessIdentity: !Sub origin-access-identity/cloudfront/${OriginAccessIdentity}
-          - DomainName: !Sub ${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com
+          - DomainName: !Sub ${RestApi}.execute-api.${AWS::Region}.amazonaws.com
             OriginPath: /Prod
             Id: apiOrigin
             CustomOriginConfig:
@@ -168,7 +171,7 @@ Resources:
 Outputs:
   ApiUrl:
     Description: URL of the API endpoint
-    Value: !Sub 'https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod'
+    Value: !Sub 'https://${RestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod'
   WebUrl:
     Description: URL of the Web endpoint
     Value: !Sub 'https://${CloudFrontDistribution.DomainName}'

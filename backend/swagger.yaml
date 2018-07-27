@@ -3,6 +3,23 @@ swagger: '2.0'
 info:
   version: '1.0'
   title: Serverless Todo Demo
+definitions:
+  ToDo:
+    type: object
+    properties:
+      id:
+        type: string
+        description: The id of the task
+      text:
+        type: string
+        description: The task title
+      state:
+        type: string
+        description: The state of the task
+        enum:
+          - OPEN
+          - IN_PROGRESS
+          - DONE
 paths:
   /todos:
     post:
@@ -11,14 +28,37 @@ paths:
         type: aws_proxy
         uri:
           'Fn::Sub': 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ApiAddTodoFunction.Arn}/invocations'
-      responses: {}
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: todo
+        description: The todo to create.
+        schema:
+          $ref: "#/definitions/ToDo"
+      responses:
+        200:
+          description: A task
+          schema:
+            $ref: "#/definitions/ToDo"
     get:
       x-amazon-apigateway-integration:
         httpMethod: POST
         type: aws_proxy
         uri:
           'Fn::Sub': 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ApiListTodosFunction.Arn}/invocations'
-      responses: {}
+      produces:
+      - application/json
+      responses:
+        201:
+          description: A task
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/ToDo"
+
   '/todos/{id}':
     put:
       x-amazon-apigateway-integration:
@@ -26,4 +66,19 @@ paths:
         type: aws_proxy
         uri:
           'Fn::Sub': 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ApiUpdateTodoFunction.Arn}/invocations'
-      responses: {}
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: todo
+        description: The todo to create.
+        schema:
+          $ref: "#/definitions/ToDo"
+      responses:
+        200:
+          description: A task
+          schema:
+            $ref: "#/definitions/ToDo"
+
