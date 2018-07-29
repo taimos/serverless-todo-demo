@@ -22,6 +22,7 @@ Resources:
     Properties:
       Handler: bundle.apiGetTodos
       CodeUri: ./backend/dist/bundle.js
+      Tracing: Active
       Policies:
         Statement:
           - Effect: "Allow"
@@ -44,6 +45,7 @@ Resources:
     Properties:
       Handler: bundle.apiUpdateTodo
       CodeUri: ./backend/dist/bundle.js
+      Tracing: Active
       Policies:
         Statement:
           - Effect: "Allow"
@@ -66,6 +68,7 @@ Resources:
     Properties:
       Handler: bundle.apiAddTodo
       CodeUri: ./backend/dist/bundle.js
+      Tracing: Active
       Policies:
         Statement:
           - Effect: "Allow"

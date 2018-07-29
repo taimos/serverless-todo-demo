@@ -15,7 +15,7 @@ bootstrapCustomizations: ./src/style/bootstrap-customizations.scss
 appStyles: ./src/style/app.scss
 
 ### Bootstrap styles
-styles:x
+styles:
 
   # Mixins
   mixins: true

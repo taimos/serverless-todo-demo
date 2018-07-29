@@ -7,7 +7,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-const API_GW_URL = 'https://u4qoacf97i.execute-api.eu-central-1.amazonaws.com';
+const API_GW_URL = 'https://ii5p1bxp53.execute-api.eu-central-1.amazonaws.com';
 
 /**
  * Env
