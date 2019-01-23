@@ -1,0 +1,7 @@
+{
+  "/todos": {
+    "target": "https://d35eplr25bjhrs.cloudfront.net",
+    "secure": true,
+    "changeOrigin": true
+  }
+}

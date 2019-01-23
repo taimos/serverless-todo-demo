@@ -2,7 +2,7 @@ import {APIGatewayProxyEvent, APIGatewayProxyResult} from 'aws-lambda';
 import {expect} from 'chai';
 import * as lambdaLocal from 'lambda-local';
 import * as proxyquire from 'proxyquire';
-import {ToDo} from '../lib/data/todo';
+import {ToDo} from '../lib/data';
 
 lambdaLocal.getLogger().level = 'error';
 
@@ -14,9 +14,7 @@ const uuidStub = {
     v4: undefined,
 };
 
-const getAPI = proxyquire('../lib/api/getTodos', {'../data/todo': todoStub});
-const addAPI = proxyquire('../lib/api/addTodo', {'../data/todo': todoStub, 'node-uuid': uuidStub});
-const updateAPI = proxyquire('../lib/api/updateTodo', {'../data/todo': todoStub});
+const api = proxyquire('../lib/index', {'./data': todoStub, 'node-uuid': uuidStub});
 
 describe('GetAPI', () => {
     beforeEach(() => {
@@ -34,7 +32,7 @@ describe('GetAPI', () => {
 
         const response : APIGatewayProxyResult = await lambdaLocal.execute({
             event: {},
-            lambdaFunc: getAPI,
+            lambdaFunc: api,
             lambdaHandler: 'apiGetTodos',
         });
 
@@ -71,7 +69,7 @@ describe('AddAPI', () => {
 
         const response : APIGatewayProxyResult = await lambdaLocal.execute({
             event,
-            lambdaFunc: addAPI,
+            lambdaFunc: api,
             lambdaHandler: 'apiAddTodo',
         });
 
@@ -121,7 +119,7 @@ describe('UpdateAPI', () => {
 
         const response : APIGatewayProxyResult = await lambdaLocal.execute({
             event,
-            lambdaFunc: updateAPI,
+            lambdaFunc: api,
             lambdaHandler: 'apiUpdateTodo',
         });
 
@@ -151,7 +149,7 @@ describe('UpdateAPI', () => {
 
         const response : APIGatewayProxyResult = await lambdaLocal.execute({
             event,
-            lambdaFunc: updateAPI,
+            lambdaFunc: api,
             lambdaHandler: 'apiUpdateTodo',
         });
         expect(response).to.have.property('statusCode', 400);

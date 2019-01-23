@@ -1,0 +1,38 @@
+<div class="row">
+  <div class="col-md-4">
+    <form class="form-inline">
+      <input class="form-control" [(ngModel)]="text" name="text" placeholder="New Task...">
+      <a class="btn btn-primary" (click)="create()">Save</a>
+    </form>
+  </div>
+  <div class="col-md-4"></div>
+  <div class="col-md-4"></div>
+</div>
+<hr/>
+<div class="row">
+  <div class="col-md-12">
+    <table class="table table-condensed extended column-heading">
+      <thead>
+        <tr>
+          <th width="33%">ID</th>
+          <th width="33%">Text</th>
+          <th width="33%">State</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let todo of todos" [ngClass]="{'table-danger':todo.state==='OPEN','table-info':todo.state==='IN_PROGRESS','table-success':todo.state==='DONE'}">
+          <td>{{todo.id}}</td>
+          <td>{{todo.text}}</td>
+          <td>{{todo.state}}&nbsp;
+            <a style="cursor: pointer" (click)="proceed(todo)" *ngIf="todo.state !== 'DONE'">
+              <fa-icon icon="arrow-right"></fa-icon>
+            </a>
+            <a style="cursor: pointer" (click)="reopen(todo)" *ngIf="todo.state === 'DONE'">
+              <fa-icon icon="recycle"></fa-icon>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

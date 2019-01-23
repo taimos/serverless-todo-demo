@@ -125,6 +125,13 @@ Resources:
       DistributionConfig:
         Comment: AWS UGS Todo
         DefaultRootObject: index.html
+        CustomErrorResponses:
+          - ErrorCode: 403
+            ResponseCode: 200
+            ResponsePagePath: /index.html
+          - ErrorCode: 404
+            ResponseCode: 200
+            ResponsePagePath: /index.html
         Origins:
           - DomainName: !Sub ${WebappBucket}.s3.amazonaws.com
             Id: s3origin
