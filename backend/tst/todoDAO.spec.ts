@@ -1,14 +1,15 @@
 import * as AWS from 'aws-sdk-mock';
-import {DocumentClient} from 'aws-sdk/lib/dynamodb/document_client';
-import {expect} from 'chai';
+import { DocumentClient } from 'aws-sdk/lib/dynamodb/document_client';
+import { expect } from 'chai';
 import * as lambdaLocal from 'lambda-local';
-import {listTodos, save, ToDo} from '../lib/data';
 import ScanOutput = DocumentClient.ScanOutput;
 import PutItemInput = DocumentClient.PutItemInput;
 import ScanInput = DocumentClient.ScanInput;
+import { env } from 'process';
+import { listTodos, save, ToDo } from '../lib/data';
 
 lambdaLocal.getLogger().level = 'error';
-process.env.TABLE_NAME = 'SomeTable';
+env.TABLE_NAME = 'SomeTable';
 
 describe('Test ToDo DAO - save', () => {
 

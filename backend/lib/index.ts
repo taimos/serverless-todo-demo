@@ -1,6 +1,6 @@
-import {APIGatewayProxyEvent, APIGatewayProxyResult} from 'aws-lambda';
+import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import * as uuid from 'node-uuid';
-import {listTodos, save, ToDo} from './data';
+import { listTodos, save, ToDo } from './data';
 
 export const apiAddTodo = async (event : APIGatewayProxyEvent) : Promise<APIGatewayProxyResult> => {
     const todo : ToDo = JSON.parse(event.body);

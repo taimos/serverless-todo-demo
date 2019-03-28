@@ -1,8 +1,9 @@
-import {APIGatewayProxyEvent, APIGatewayProxyResult} from 'aws-lambda';
-import {expect} from 'chai';
+import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
+import { expect } from 'chai';
 import * as lambdaLocal from 'lambda-local';
+import { describe, it } from 'mocha';
 import * as proxyquire from 'proxyquire';
-import {ToDo} from '../lib/data';
+import { ToDo } from '../lib/data';
 
 lambdaLocal.getLogger().level = 'error';
 
@@ -14,7 +15,7 @@ const uuidStub = {
     v4: undefined,
 };
 
-const api = proxyquire('../lib/index', {'./data': todoStub, 'node-uuid': uuidStub});
+const api = proxyquire('../lib/index', { './data': todoStub, 'node-uuid': uuidStub });
 
 describe('GetAPI', () => {
     beforeEach(() => {
@@ -104,6 +105,8 @@ describe('UpdateAPI', () => {
                 id: 'someId',
             },
             queryStringParameters: {},
+            multiValueHeaders: {},
+            multiValueQueryStringParameters: {},
             stageVariables: {},
             requestContext: undefined,
             resource: '',

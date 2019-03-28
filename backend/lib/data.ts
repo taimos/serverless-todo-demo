@@ -1,5 +1,5 @@
-import {DynamoDB} from 'aws-sdk';
-import {DocumentClient} from 'aws-sdk/lib/dynamodb/document_client';
+import { DynamoDB } from 'aws-sdk';
+import { DocumentClient } from 'aws-sdk/lib/dynamodb/document_client';
 import AttributeMap = DocumentClient.AttributeMap;
 import ScanOutput = DocumentClient.ScanOutput;
 import PutItemInput = DocumentClient.PutItemInput;
